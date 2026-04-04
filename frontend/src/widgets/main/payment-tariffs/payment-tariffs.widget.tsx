@@ -31,24 +31,36 @@ export const PaymentTariffsWidget = ({ paymentUrl, tariffAmounts }: IProps) => {
                 </Group>
 
                 <Group gap="sm" grow>
-                    {tariffAmounts.map((amount) => (
-                        <Button
-                            className={classes.tariffButton}
-                            color="green"
-                            component="a"
-                            href={paymentUrl}
-                            key={amount}
-                            radius="md"
-                            rel="noopener noreferrer"
-                            size="lg"
-                            target="_blank"
-                            variant="outline"
-                        >
-                            <Text fw={700} size="lg">
-                                {amount} ₽
-                            </Text>
-                        </Button>
-                    ))}
+                    {tariffAmounts.map((amount) => {
+                        let href = paymentUrl
+                        try {
+                            const url = new URL(paymentUrl)
+                            url.searchParams.set('amount', String(amount))
+                            href = url.toString()
+                        } catch {
+                            const separator = paymentUrl.includes('?') ? '&' : '?'
+                            href = `${paymentUrl}${separator}amount=${amount}`
+                        }
+
+                        return (
+                            <Button
+                                className={classes.tariffButton}
+                                color="green"
+                                component="a"
+                                href={href}
+                                key={amount}
+                                radius="md"
+                                rel="noopener noreferrer"
+                                size="lg"
+                                target="_blank"
+                                variant="outline"
+                            >
+                                <Text fw={700} size="lg">
+                                    {amount} ₽
+                                </Text>
+                            </Button>
+                        )
+                    })}
                 </Group>
             </Stack>
         </Paper>

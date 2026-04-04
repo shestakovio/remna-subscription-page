@@ -4,6 +4,12 @@ import { z } from 'zod';
 const REQUIRED_REMNAWAVE_API_TOKEN_MESSAGE =
     'Remnawave Dashboard → Remnawave Settings → API Tokens. Create a new API Token and set it in the .env file.';
 
+const tariffAmountSchema = z
+    .string()
+    .optional()
+    .transform((v) => (v && v.length > 0 ? parseFloat(v) : undefined))
+    .refine((v) => v === undefined || !isNaN(v), 'Must be a valid number');
+
 export const configSchema = z
     .object({
         APP_PORT: z
@@ -49,26 +55,10 @@ export const configSchema = z
             .optional()
             .transform((v) => (v && v.length > 0 ? v : undefined)),
 
-        TARIFF_1_AMOUNT: z
-            .string()
-            .optional()
-            .transform((v) => (v && v.length > 0 ? parseFloat(v) : undefined))
-            .refine((v) => v === undefined || !isNaN(v), 'TARIFF_1_AMOUNT must be a valid number'),
-        TARIFF_2_AMOUNT: z
-            .string()
-            .optional()
-            .transform((v) => (v && v.length > 0 ? parseFloat(v) : undefined))
-            .refine((v) => v === undefined || !isNaN(v), 'TARIFF_2_AMOUNT must be a valid number'),
-        TARIFF_3_AMOUNT: z
-            .string()
-            .optional()
-            .transform((v) => (v && v.length > 0 ? parseFloat(v) : undefined))
-            .refine((v) => v === undefined || !isNaN(v), 'TARIFF_3_AMOUNT must be a valid number'),
-        TARIFF_4_AMOUNT: z
-            .string()
-            .optional()
-            .transform((v) => (v && v.length > 0 ? parseFloat(v) : undefined))
-            .refine((v) => v === undefined || !isNaN(v), 'TARIFF_4_AMOUNT must be a valid number'),
+        TARIFF_1_AMOUNT: tariffAmountSchema,
+        TARIFF_2_AMOUNT: tariffAmountSchema,
+        TARIFF_3_AMOUNT: tariffAmountSchema,
+        TARIFF_4_AMOUNT: tariffAmountSchema,
 
         MARZBAN_LEGACY_LINK_ENABLED: z
             .string()
