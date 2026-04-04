@@ -251,6 +251,13 @@ export class RootService {
 
             const paymentUrl = await this.resolvePaymentUrl(shortUuid, baseSettings.paymentUrl);
 
+            const tariffAmounts = [
+                this.configService.get<number>('TARIFF_1_AMOUNT'),
+                this.configService.get<number>('TARIFF_2_AMOUNT'),
+                this.configService.get<number>('TARIFF_3_AMOUNT'),
+                this.configService.get<number>('TARIFF_4_AMOUNT'),
+            ].filter((v): v is number => v !== undefined);
+
             res.cookie('session', this.generateJwtForCookie(subpageConfig.subpageConfigUuid), {
                 httpOnly: true,
                 secure: true,
@@ -262,6 +269,7 @@ export class RootService {
                 metaDescription: baseSettings.metaDescription,
                 panelData: Buffer.from(JSON.stringify(subscriptionData)).toString('base64'),
                 paymentUrl,
+                tariffAmounts: JSON.stringify(tariffAmounts),
             });
         } catch (error) {
             this.logger.error('Error in returnWebpage', error);
