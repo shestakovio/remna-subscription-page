@@ -56,6 +56,19 @@ export function RootLayout() {
             paymentDiv.remove()
         }
 
+        const tariffsDiv = document.getElementById('tariffs')
+        if (tariffsDiv) {
+            try {
+                const amounts = JSON.parse(tariffsDiv.dataset.amounts ?? '[]')
+                if (Array.isArray(amounts)) {
+                    paymentActions.setTariffAmounts(amounts)
+                }
+            } catch {
+                consola.error('Failed to parse tariff amounts')
+            }
+            tariffsDiv.remove()
+        }
+
         const fetchConfig = async () => {
             try {
                 const tempConfig = await ofetch<unknown>(

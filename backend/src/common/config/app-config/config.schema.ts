@@ -49,6 +49,27 @@ export const configSchema = z
             .optional()
             .transform((v) => (v && v.length > 0 ? v : undefined)),
 
+        TARIFF_1_AMOUNT: z
+            .string()
+            .optional()
+            .transform((v) => (v && v.length > 0 ? parseFloat(v) : undefined))
+            .refine((v) => v === undefined || !isNaN(v), 'TARIFF_1_AMOUNT must be a valid number'),
+        TARIFF_2_AMOUNT: z
+            .string()
+            .optional()
+            .transform((v) => (v && v.length > 0 ? parseFloat(v) : undefined))
+            .refine((v) => v === undefined || !isNaN(v), 'TARIFF_2_AMOUNT must be a valid number'),
+        TARIFF_3_AMOUNT: z
+            .string()
+            .optional()
+            .transform((v) => (v && v.length > 0 ? parseFloat(v) : undefined))
+            .refine((v) => v === undefined || !isNaN(v), 'TARIFF_3_AMOUNT must be a valid number'),
+        TARIFF_4_AMOUNT: z
+            .string()
+            .optional()
+            .transform((v) => (v && v.length > 0 ? parseFloat(v) : undefined))
+            .refine((v) => v === undefined || !isNaN(v), 'TARIFF_4_AMOUNT must be a valid number'),
+
         MARZBAN_LEGACY_LINK_ENABLED: z
             .string()
             .default('false')

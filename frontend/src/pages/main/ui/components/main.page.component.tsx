@@ -6,6 +6,7 @@ import {
     CardsBlockRenderer,
     InstallationGuideConnector,
     MinimalBlockRenderer,
+    PaymentTariffsWidget,
     RawKeysWidget,
     SubscriptionInfoCardsWidget,
     SubscriptionInfoCollapsedWidget,
@@ -15,7 +16,7 @@ import {
 } from '@widgets/main'
 import { useAppConfig, useAppConfigStoreActions, useCurrentLang } from '@entities/app-config-store'
 import { LanguagePicker } from '@shared/ui/language-picker/language-picker.shared'
-import { usePaymentUrl } from '@entities/payment-store'
+import { usePaymentUrl, useTariffAmounts } from '@entities/payment-store'
 import { Page, RemnawaveLogo } from '@shared/ui'
 
 interface IMainPageComponentProps {
@@ -42,6 +43,7 @@ export const MainPageComponent = ({ isMobile, platform }: IMainPageComponentProp
     const currentLang = useCurrentLang()
     const { setLanguage } = useAppConfigStoreActions()
     const paymentUrl = usePaymentUrl()
+    const tariffAmounts = useTariffAmounts()
 
     const brandName = config.brandingSettings.title
     let hasCustomLogo = !!config.brandingSettings.logoUrl
@@ -116,6 +118,11 @@ export const MainPageComponent = ({ isMobile, platform }: IMainPageComponentProp
                     {SubscriptionInfoBlockRenderer && (
                         <SubscriptionInfoBlockRenderer isMobile={isMobile} />
                     )}
+
+                    <PaymentTariffsWidget
+                        paymentUrl={paymentUrl}
+                        tariffAmounts={tariffAmounts}
+                    />
 
                     {atLeastOnePlatformApp && (
                         <InstallationGuideConnector
